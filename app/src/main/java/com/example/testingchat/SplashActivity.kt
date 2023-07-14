@@ -15,7 +15,7 @@ class SplashActivity : AppCompatActivity() {
 
         Timer().schedule(object : TimerTask() {
             override fun run() {
-                val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+                val intent = Intent(this@SplashActivity, AuthPhoneActivity::class.java)
                 startActivity(intent)
                 finish()
             }

@@ -3,9 +3,9 @@ package com.example.testingchat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class AuthActivity : AppCompatActivity() {
+class AuthUsernameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
+        setContentView(R.layout.activity_auth_username)
     }
 }
