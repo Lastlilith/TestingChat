@@ -1,11 +1,24 @@
 package com.example.testingchat
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.example.testingchat.databinding.ActivityAuthUsernameBinding
 
 class AuthUsernameActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityAuthUsernameBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth_username)
+        binding = ActivityAuthUsernameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.btnLetMeIn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            Animatoo.animateSlideLeft(this@AuthUsernameActivity)
+            finish()
+        }
     }
 }

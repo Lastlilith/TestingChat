@@ -3,6 +3,7 @@ package com.example.testingchat
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
 
 class AuthPhoneActivity : AppCompatActivity() {
@@ -17,14 +18,15 @@ class AuthPhoneActivity : AppCompatActivity() {
         val phoneNumber = binding.etAuthMobileNumber
 
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
-        binding.btnSend.setOnClickListener {
+        binding.btnEnter.setOnClickListener {
             if (!countryCodePicker.isValidFullNumber) {
                 phoneNumber.error = "Invalid phone number"
                 return@setOnClickListener
             }
-            val intent = Intent(this, AuthOtpActivity::class.java)
+            val intent = Intent(this, AuthUsernameActivity::class.java)
             intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
             startActivity(intent)
+            Animatoo.animateSlideLeft(this@AuthPhoneActivity)
             finish()
         }
     }

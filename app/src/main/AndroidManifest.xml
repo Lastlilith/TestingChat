@@ -17,9 +17,6 @@
             android:name=".AuthUsernameActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthOtpActivity"
-            android:exported="false" />
-        <activity
             android:name=".AuthPhoneActivity"
             android:exported="false" />
         <activity

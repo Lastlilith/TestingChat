@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import java.util.Timer
 import java.util.TimerTask
 
@@ -17,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
             override fun run() {
                 val intent = Intent(this@SplashActivity, AuthPhoneActivity::class.java)
                 startActivity(intent)
+                Animatoo.animateFade(this@SplashActivity)
                 finish()
             }
         }, DELAY)
