@@ -33,8 +33,5 @@ class MainActivity : AppCompatActivity() {
         }
         binding.bottomNav.selectedItemId = R.id.menu_chat
 
-        binding.btnSearch.setOnClickListener {
-            startActivity(Intent(this, SearchUserActivity::class.java))
-        }
     }
 }

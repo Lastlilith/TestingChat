@@ -3,9 +3,9 @@ package com.example.testingchat
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class SearchUserActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_chat)
     }
 }
