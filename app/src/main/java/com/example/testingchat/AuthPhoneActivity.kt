@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,6 +54,13 @@ class AuthPhoneActivity : AppCompatActivity() {
                 binding.authProgressBar.visibility = View.GONE
                 binding.btnSend.isEnabled = true
             }
+        }
+        viewModel.error.observe(this) {
+            Snackbar.make(binding.root,  it, Snackbar.LENGTH_LONG).show()
+            binding.btnEnter.isEnabled = false
+        }
+        viewModel.successCode.observe(this) {
+            binding.btnEnter.isEnabled = it
         }
     }
 }

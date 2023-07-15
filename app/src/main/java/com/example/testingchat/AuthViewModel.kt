@@ -22,12 +22,23 @@ class AuthViewModel @Inject constructor(
     val phoneText: NonNullLiveData<String>
         get() = _phoneText
 
+    private val _smsText = NonNullMutableLiveData("")
+    val smsText: NonNullLiveData<String>
+        get() = _smsText
+
     private val _progress = MutableLiveData<Boolean>()
     val progress: LiveData<Boolean>
         get() = _progress
 
-    fun sendAuthRequest() {
+    private val _successCode = MutableLiveData<Boolean>()
+    val successCode: LiveData<Boolean>
+        get() = _successCode
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String>
+        get() = _error
+
+    fun sendAuthRequest() {
         _progress.value = true
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -40,18 +51,23 @@ class AuthViewModel @Inject constructor(
                     if (response.isSuccessful && response.body() != null) {
                         _progress.value = false
                         Log.e("POPO", "success ${response.message()} ${response.body()}")
-                        Toast.makeText(application.applicationContext, "Success", Toast.LENGTH_SHORT)
+                        Toast.makeText(application.applicationContext, "Пароль: 133337", Toast.LENGTH_LONG)
                             .show()
+                        _successCode.value = true
                     } else {
                         Log.e("POPO", "failed: ${response.message()} ${response.body()} ")
                         Toast.makeText(application.applicationContext, "Failed", Toast.LENGTH_SHORT).show()
+                        _error.value = "Проверьте интернет соединение и повторите попытку позже"
                         _progress.value = false
+                        _successCode.value = false
                     }
                 }
             } catch (e: Exception) {
                 launch(Dispatchers.Main) {
                     Log.e("POPO", "failed: ${e.localizedMessage} ")
+                    _error.value = "Проверьте интернет соединение и повторите попытку позже"
                     _progress.value = false
+                    _successCode.value = false
                 }
             }
         }
