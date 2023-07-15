@@ -20,7 +20,7 @@ class AuthPhoneActivity : AppCompatActivity() {
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
         binding.btnEnter.setOnClickListener {
             if (!countryCodePicker.isValidFullNumber) {
-                phoneNumber.error = "Invalid phone number"
+                phoneNumber.error = "Неверный формат номера телефона"
                 return@setOnClickListener
             }
             val intent = Intent(this, AuthUsernameActivity::class.java)

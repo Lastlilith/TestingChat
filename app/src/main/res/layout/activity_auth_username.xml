@@ -42,7 +42,7 @@
         android:gravity="center"
         android:letterSpacing="0.08"
         android:text="Введите Ваше Имя"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
 
@@ -72,7 +72,7 @@
         android:gravity="center"
         android:letterSpacing="0.08"
         android:text="Введите Ваш Никнейм"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@+id/et_name" />
 
@@ -91,6 +91,17 @@
         android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_enter_username" />
 
+    <ProgressBar
+        android:id="@+id/username_progressBar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/et_username"
+        app:layout_constraintBottom_toTopOf="@+id/btn_let_me_in"
+        android:indeterminateTint="@color/primary"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/btn_let_me_in"
         android:layout_width="match_parent"
@@ -101,16 +112,5 @@
         android:background="@drawable/btn_rounded_corner"
         android:text="Зарегистрироваться"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/username_progressBar"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:indeterminateTint="@color/primary"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

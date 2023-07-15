@@ -24,20 +24,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="Профиль"
+                android:layout_marginStart="10dp"
+                android:text="Редактировать"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <ImageButton
-                android:id="@+id/btn_edit"
+                android:id="@+id/btn_done"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="10dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/icon_edit"
+                android:src="@drawable/icon_done"
                 app:tint="@color/white" />
         </LinearLayout>
 
@@ -56,94 +56,6 @@
             app:layout_constraintTop_toBottomOf="@+id/profile_toolbar" />
 
 
-        <ImageView
-            android:id="@+id/iv_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/icon_phone"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_phone_header"
-            app:tint="@color/primary" />
-
-        <TextView
-            android:id="@+id/tv_phone_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="25dp"
-            android:text="Телефон"
-            android:textColor="@color/light_gray"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_phone"
-            app:layout_constraintTop_toBottomOf="@+id/iv_profile_pic" />
-
-        <TextView
-            android:id="@+id/tv_phone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="+79147220023"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_phone_header"
-            app:layout_constraintTop_toBottomOf="@+id/tv_phone_header" />
-
-        <View
-            android:id="@+id/phone_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_phone_header"
-            app:layout_constraintTop_toBottomOf="@+id/tv_phone" />
-
-        <ImageView
-            android:id="@+id/iv_nickname"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:src="@drawable/person_icon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_nickname_header"
-            app:tint="@color/primary" />
-
-
-        <TextView
-            android:id="@+id/tv_nickname_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Никнейм"
-            android:textColor="@color/light_gray"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_nickname"
-            app:layout_constraintTop_toBottomOf="@+id/phone_divider" />
-
-        <TextView
-            android:id="@+id/tv_nickname"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Lastlilith"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_nickname_header"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nickname_header" />
-
-        <View
-            android:id="@+id/nickname_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/light_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_nickname"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
         <ImageView
             android:id="@+id/iv_city"
@@ -162,20 +74,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:gravity="center"
             android:text="Город проживания"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/black"
             android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_nickname"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_divider" />
+            app:layout_constraintStart_toEndOf="@+id/iv_city"
+            app:layout_constraintTop_toBottomOf="@+id/iv_profile_pic" />
 
-        <TextView
-            android:id="@+id/tv_city"
+        <EditText
+            android:id="@+id/et_city"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Нет информации"
+            android:hint="Введите город проживания"
             android:textColor="@color/black"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_city_header"
             app:layout_constraintTop_toBottomOf="@+id/tv_city_header" />
@@ -187,8 +102,8 @@
             android:layout_marginTop="10dp"
             android:background="@color/light_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_city"
-            app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+            app:layout_constraintStart_toStartOf="@+id/et_city"
+            app:layout_constraintTop_toBottomOf="@+id/et_city" />
 
         <ImageView
             android:id="@+id/iv_birth_date"
@@ -210,17 +125,20 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="Дата рождения"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/iv_birth_date"
             app:layout_constraintTop_toBottomOf="@+id/city_divider" />
 
-        <TextView
-            android:id="@+id/tv_birth_date"
+        <EditText
+            android:id="@+id/et_birth_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Нет информации"
+            android:hint="Введите дату рождения"
             android:textColor="@color/black"
+            android:textSize="15sp"
+            android:inputType="date"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_birth_date_header"
             app:layout_constraintTop_toBottomOf="@+id/tv_birth_date_header" />
@@ -232,8 +150,8 @@
             android:layout_marginTop="10dp"
             android:background="@color/light_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_birth_date"
-            app:layout_constraintTop_toBottomOf="@+id/tv_birth_date" />
+            app:layout_constraintStart_toStartOf="@+id/et_birth_date"
+            app:layout_constraintTop_toBottomOf="@+id/et_birth_date" />
 
         <ImageView
             android:id="@+id/iv_zodiak"
@@ -256,7 +174,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="Знак зодиака"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/iv_zodiak"
             app:layout_constraintTop_toBottomOf="@+id/birth_divider" />
@@ -304,20 +222,24 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="О себе"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/black"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/iv_zodiak"
             app:layout_constraintTop_toBottomOf="@+id/zodiak_divider" />
 
-        <TextView
-            android:id="@+id/tv_about"
+        <EditText
+            android:id="@+id/et_about"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Нет информации"
+            android:hint="Расскажите о себе"
             android:textColor="@color/black"
+            android:textSize="15sp"
             android:layout_marginBottom="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="20dp"
+            android:inputType="textMultiLine"
+            android:gravity="top|start"
+            android:background="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_about_header"
             app:layout_constraintTop_toBottomOf="@+id/tv_about_header" />
