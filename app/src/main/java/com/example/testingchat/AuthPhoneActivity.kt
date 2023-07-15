@@ -1,33 +1,58 @@
 package com.example.testingchat
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import androidx.lifecycle.ViewModelProvider
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthPhoneActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAuthPhoneBinding
+
+    private val viewModel by lazy {
+        ViewModelProvider(this)[AuthViewModel::class.java]
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthPhoneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        observeViewModel()
+
         val countryCodePicker = binding.authCountryCode
         val phoneNumber = binding.etAuthMobileNumber
 
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
-        binding.btnEnter.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             if (!countryCodePicker.isValidFullNumber) {
                 phoneNumber.error = "Неверный формат номера телефона"
                 return@setOnClickListener
             }
-            val intent = Intent(this, AuthUsernameActivity::class.java)
-            intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
-            startActivity(intent)
-            Animatoo.animateSlideLeft(this@AuthPhoneActivity)
-            finish()
+            viewModel.sendAuthRequest()
+
+//            val intent = Intent(this, AuthUsernameActivity::class.java)
+//            intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
+//            startActivity(intent)
+//            Animatoo.animateSlideLeft(this@AuthPhoneActivity)
+//            finish()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.phoneText.observe(this) {
+            binding.etAuthMobileNumber.text
+        }
+        viewModel.progress.observe(this) {
+            if (it) {
+                binding.authProgressBar.visibility = View.VISIBLE
+                binding.btnSend.isEnabled = false
+            } else {
+                binding.authProgressBar.visibility = View.GONE
+                binding.btnSend.isEnabled = true
+            }
         }
     }
 }
