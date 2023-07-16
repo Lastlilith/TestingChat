@@ -34,7 +34,7 @@ class AuthPhoneActivity : AppCompatActivity() {
                 phoneNumber.error = "Неверный формат номера телефона"
                 return@setOnClickListener
             }
-            viewModel.sendAuthRequest()
+            viewModel.sendAuthRequest(countryCodePicker.fullNumberWithPlus)
         }
 
         binding.btnEnter.setOnClickListener {

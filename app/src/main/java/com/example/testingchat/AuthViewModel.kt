@@ -9,6 +9,7 @@ import com.example.testingchat.base.BaseViewModel
 import com.example.testingchat.data.auth.initial.InitialAuthRequest
 import com.example.testingchat.data.auth.sms.SmsAuthRequest
 import com.example.testingchat.data.const.Constant.Companion.ACCESS_TOKEN
+import com.example.testingchat.data.const.Constant.Companion.PHONE_NUMBER
 import com.example.testingchat.data.const.Constant.Companion.REFRESH_TOKEN
 import com.example.testingchat.data.repository.RemoteUser
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,8 +49,9 @@ class AuthViewModel @Inject constructor(
     val error: LiveData<String>
         get() = _error
 
-    fun sendAuthRequest() {
+    fun sendAuthRequest(number: String) {
         _progress.value = true
+        _phoneText.value = number
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = authenticate(
@@ -62,6 +64,7 @@ class AuthViewModel @Inject constructor(
                         _progress.value = false
                         Log.e("POPO", "success ${response.message()} ${response.body()}")
                         _successCode.value = true
+                        preferenceManager.setData(PHONE_NUMBER, _phoneText.value.toString().trim())
                         Toast.makeText(application.applicationContext, "Пароль: 133337", Toast.LENGTH_SHORT).show()
                     } else {
                         Log.e("POPO", "failed from else: ${response.message()} ${response.body()} ")
@@ -102,8 +105,12 @@ class AuthViewModel @Inject constructor(
                     if (response.isSuccessful && response.body()!= null) {
                         Log.e("POPO", "success ${response.message()} ${response.body()}")
                         _progress.value = false
-                        preferenceManager.setData(REFRESH_TOKEN, response.body()!!.refreshToken)
-                        preferenceManager.setData(ACCESS_TOKEN, response.body()!!.access_token)
+                        if (response.body()!!.refreshToken.isNullOrEmpty() || response.body()!!.access_token.isNullOrEmpty()) {
+                            return@launch
+                        } else {
+                            preferenceManager.setData(REFRESH_TOKEN, response.body()!!.refreshToken)
+                            preferenceManager.setData(ACCESS_TOKEN, response.body()!!.access_token)
+                        }
                         _isUserExist.value = response.body()!!.is_user_exists
                         Log.e("POPO", "from viewModel: ${_isUserExist.value}")
                     } else {
