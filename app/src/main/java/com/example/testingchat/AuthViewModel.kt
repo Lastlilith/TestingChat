@@ -23,6 +23,7 @@ class AuthViewModel @Inject constructor(
     private val remote: RemoteUserAuth
 ) : BaseViewModel() {
 
+
     private val _phoneText = NonNullMutableLiveData("")
     val phoneText: NonNullLiveData<String>
         get() = _phoneText

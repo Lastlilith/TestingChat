@@ -7,11 +7,20 @@ import javax.inject.Inject
 
 class PreferenceManager @Inject constructor(private val preferences: SharedPreferences){
 
-    fun setData(key:String, value:Any){
-        when(value){
+    fun setData(key: Any, value: Any) {
+        when (key) {
+            is String -> setDataInternal(key, value)
+            is Int -> setDataInternal(key.toString(), value)
+            else -> throw IllegalArgumentException("Unsupported key type")
+        }
+    }
+
+    private fun setDataInternal(key: String, value: Any) {
+        when (value) {
             is String -> setString(key, value)
             is Int -> setInt(key, value)
             is Boolean -> setBoolean(key, value)
+            else -> throw IllegalArgumentException("Unsupported value type")
         }
     }
 
@@ -31,6 +40,7 @@ class PreferenceManager @Inject constructor(private val preferences: SharedPrefe
 
     companion object{
         private const val PREFERENCES_NAME = "PRE"
+
         fun getPreferences(context: Context): SharedPreferences = context.getSharedPreferences(
             PREFERENCES_NAME, Context.MODE_PRIVATE)
     }

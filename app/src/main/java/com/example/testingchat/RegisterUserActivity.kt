@@ -133,6 +133,13 @@ class RegisterUserActivity : AppCompatActivity() {
                     finish()
                 }
             }
+            dataSent.observe(this@RegisterUserActivity) {
+                if (it) {
+                    Snackbar.make(binding.root, "Data sent successfully", Snackbar.LENGTH_LONG).show()
+                } else {
+                    Snackbar.make(binding.root, "Failed to send data", Snackbar.LENGTH_LONG).show()
+                }
+            }
         }
     }
 }
