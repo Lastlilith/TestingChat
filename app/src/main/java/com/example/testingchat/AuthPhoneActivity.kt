@@ -6,6 +6,7 @@ import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,12 +44,15 @@ class AuthPhoneActivity : AppCompatActivity() {
                 if (isUserExisting) {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                    Animatoo.animateSlideLeft(this@AuthPhoneActivity)
                     finish()
                 } else if (viewModel.error.value?.isNotEmpty() == true) {
                     return@postDelayed
                 } else {
-                    val intent = Intent(this, AuthUsernameActivity::class.java)
+                    val intent = Intent(this, RegisterUserActivity::class.java)
+                    intent.putExtra("phoneNumber", countryCodePicker.fullNumberWithPlus)
                     startActivity(intent)
+                    Animatoo.animateSlideLeft(this@AuthPhoneActivity)
                     finish()
                 }
             }, 1000)

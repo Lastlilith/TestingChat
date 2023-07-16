@@ -8,7 +8,7 @@ import com.example.testingchat.service.AuthService
 import retrofit2.Response
 import javax.inject.Inject
 
-class RemoteUser @Inject constructor(private val service: AuthService): AuthService {
+class RemoteUserAuth @Inject constructor(private val service: AuthService): AuthService {
 
 
     override suspend fun sendAuthCode(request: InitialAuthRequest): Response<InitialAuthReponse> =

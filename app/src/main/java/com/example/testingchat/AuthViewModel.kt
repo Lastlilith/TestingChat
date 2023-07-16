@@ -11,7 +11,7 @@ import com.example.testingchat.data.auth.sms.SmsAuthRequest
 import com.example.testingchat.data.const.Constant.Companion.ACCESS_TOKEN
 import com.example.testingchat.data.const.Constant.Companion.PHONE_NUMBER
 import com.example.testingchat.data.const.Constant.Companion.REFRESH_TOKEN
-import com.example.testingchat.data.repository.RemoteUser
+import com.example.testingchat.data.repository.RemoteUserAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val remote: RemoteUser
+    private val remote: RemoteUserAuth
 ) : BaseViewModel() {
 
     private val _phoneText = NonNullMutableLiveData("")
@@ -105,17 +105,15 @@ class AuthViewModel @Inject constructor(
                     if (response.isSuccessful && response.body()!= null) {
                         Log.e("POPO", "success ${response.message()} ${response.body()}")
                         _progress.value = false
-                        if (response.body()!!.refreshToken.isNullOrEmpty() || response.body()!!.access_token.isNullOrEmpty()) {
-                            return@launch
-                        } else {
+                        _isUserExist.value = response.body()!!.is_user_exists
+                        if (response.body()!!.is_user_exists) {
                             preferenceManager.setData(REFRESH_TOKEN, response.body()!!.refreshToken)
                             preferenceManager.setData(ACCESS_TOKEN, response.body()!!.access_token)
                         }
-                        _isUserExist.value = response.body()!!.is_user_exists
                         Log.e("POPO", "from viewModel: ${_isUserExist.value}")
                     } else {
                         Log.e("POPO", "failed in response: ${response.message()} ${response.body()} ")
-                        Log.e("POPO", "sms code: ${_smsText.value}", )
+                        Log.e("POPO", "sms code: ${_smsText.value}")
                         _error.value = "Неверный код"
                         _progress.value = false
                     }

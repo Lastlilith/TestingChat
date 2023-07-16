@@ -1,6 +1,7 @@
 package com.example.testingchat
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testingchat.databinding.ActivityMainBinding
 
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.bottomNav.selectedItemId = R.id.menu_chat
+
+
 
     }
 }

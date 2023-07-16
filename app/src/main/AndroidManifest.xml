@@ -30,7 +30,7 @@
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".AuthUsernameActivity"
+            android:name=".RegisterUserActivity"
             android:exported="false" />
         <activity
             android:name=".AuthPhoneActivity"
