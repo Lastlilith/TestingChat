@@ -38,7 +38,7 @@ class SearchFragment : Fragment() {
 
         rvUsers = binding.searchUserRecycler
         rvUsers.layoutManager = LinearLayoutManager(requireContext())
-        searchUsersAdapter = SearchUserAdapter()
+        searchUsersAdapter = SearchUserAdapter(requireContext())
         rvUsers.adapter = searchUsersAdapter
 
         viewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
