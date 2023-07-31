@@ -12,10 +12,12 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private val viewModel: ChatViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         userId = intent.getStringExtra("userId") ?: ""
 
@@ -25,6 +27,8 @@ class ChatActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener { finish() }
     }
+
+
     private fun observeViewModel() {
         viewModel.apply {
             username.observe(this@ChatActivity) { username ->

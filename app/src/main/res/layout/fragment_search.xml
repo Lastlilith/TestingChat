@@ -33,7 +33,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:text="Выберите контакт"
+            android:text="Choose contact"
             android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>

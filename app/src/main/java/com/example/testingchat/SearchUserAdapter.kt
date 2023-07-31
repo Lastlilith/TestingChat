@@ -26,14 +26,7 @@ class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<Sea
 
         fun bind(user: UserModel) {
             usernameTextView.text = user.username
-            phoneNumberTextView.text = user.phone
-
-//            Glide.with(itemView.context)
-//                .load(contact.imageURL)
-//                .placeholder(R.drawable.placeholder_image) // Placeholder image while loading
-//                .error(R.drawable.error_image) // Error image if loading fails
-//                .into(imageView)
-        }
+            phoneNumberTextView.text = user.phone        }
 
     }
 
