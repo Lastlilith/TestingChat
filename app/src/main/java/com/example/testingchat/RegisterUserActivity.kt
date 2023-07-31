@@ -48,18 +48,6 @@ class RegisterUserActivity : AppCompatActivity() {
         val filters = arrayOf(filter)
         binding.etUsername.filters = filters
 
-        binding.btnLetMeIn.setOnClickListener {
-            val isNameValid = validateInput(binding.etName, binding.tvWrongName)
-            val isUsernameValid = validateInput(binding.etUsername, binding.tvWrongUsername)
-
-            if (isNameValid && isUsernameValid) {
-                viewModel.registerUser(
-                    intent.extras?.getString("phoneNumber")!!,
-                    binding.etName.text.toString(),
-                    binding.etUsername.text.toString()
-                )
-            }
-        }
     }
 
     private fun validateInput(editText: EditText, errorTextView: TextView): Boolean {

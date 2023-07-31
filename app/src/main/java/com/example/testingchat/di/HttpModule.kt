@@ -15,8 +15,8 @@ class HttpModule {
 
     @Provides
     @Singleton
-    fun provideHttpClient()
-            = OkHttpClient.Builder()
+    fun provideHttpClient() =
+        OkHttpClient.Builder()
         .callTimeout(1, TimeUnit.MINUTES)
         .connectTimeout(100, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
