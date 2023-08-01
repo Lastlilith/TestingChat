@@ -17,8 +17,6 @@ import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.hbb20.CountryCodePicker
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Timer
-import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 
 
@@ -43,12 +41,9 @@ class AuthPhoneActivity : AppCompatActivity() {
 
         countryCodePicker = binding.authCountryCode
         val phoneNumber = binding.etAuthMobileNumber
-
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
 
-
         observeUser()
-
 
         binding.btnSend.setOnClickListener {
             if (!countryCodePicker.isValidFullNumber) {
@@ -87,7 +82,7 @@ class AuthPhoneActivity : AppCompatActivity() {
     }
 
     private fun sendOtp(phoneNumber: String, isResend: Boolean) {
-        startResendTimer()
+        viewModel.startResendTimer()
         setInProgress(true)
         val builder: PhoneAuthOptions.Builder = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber(phoneNumber)
@@ -143,21 +138,6 @@ class AuthPhoneActivity : AppCompatActivity() {
         }
     }
 
-    private fun startResendTimer() {
-        binding.btnResendToken.isEnabled = false
-        val timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                timeoutSeconds--
-                binding.btnResendToken.text = "Resend OTP in $timeoutSeconds seconds"
-                if (timeoutSeconds <= 0) {
-                    timeoutSeconds = 15L
-                    timer.cancel()
-                    runOnUiThread { binding.btnResendToken.isEnabled = true }
-                }
-            }
-        }, 0, 1000)
-    }
 
     private fun observeUser() {
         viewModel.userExistsLiveData.observe(this@AuthPhoneActivity) {
@@ -183,6 +163,15 @@ class AuthPhoneActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 setInProgress(false)
+            }
+        }
+        viewModel.countdownTimerLiveData.observe(this) { timerValue ->
+            if (timerValue > 0) {
+                binding.btnResendToken.isEnabled = false
+                binding.btnResendToken.text = "Resend OTP in $timerValue seconds"
+            } else {
+                binding.btnResendToken.isEnabled = true
+                binding.btnResendToken.text = "Resend OTP"
             }
         }
     }
