@@ -2,13 +2,11 @@ package com.example.testingchat
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
@@ -18,7 +16,10 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.hbb20.CountryCodePicker
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Timer
+import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 
 
@@ -30,7 +31,9 @@ class AuthPhoneActivity : AppCompatActivity() {
 
     private var isUserExisting = false
     private val mAuth = FirebaseAuth.getInstance()
-    private val timeoutSeconds = 60L
+    private var timeoutSeconds = 15L
+
+    private lateinit var countryCodePicker: CountryCodePicker
 
     private lateinit var verificationCode: String
     private lateinit var resendingToken: ForceResendingToken
@@ -42,7 +45,7 @@ class AuthPhoneActivity : AppCompatActivity() {
 
         observeViewModel()
 
-        val countryCodePicker = binding.authCountryCode
+        countryCodePicker = binding.authCountryCode
         val phoneNumber = binding.etAuthMobileNumber
 
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
@@ -55,49 +58,48 @@ class AuthPhoneActivity : AppCompatActivity() {
                 binding.btnSend.visibility = View.GONE
                 binding.btnResendToken.visibility = View.VISIBLE
                 sendOtp(countryCodePicker.fullNumberWithPlus, false)
+
             }
         }
 
         binding.btnEnter.setOnClickListener {
-            Handler().postDelayed({
-                if (isUserExisting) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    Animatoo.animateSlideLeft(this@AuthPhoneActivity)
-                    finish()
-                } else if (viewModel.error.value?.isNotEmpty() == true) {
-                    return@postDelayed
-                } else {
-                    val intent = Intent(this, RegisterUserActivity::class.java)
-                    intent.putExtra("phoneNumber", countryCodePicker.fullNumberWithPlus)
-                    startActivity(intent)
-                    Animatoo.animateSlideLeft(this@AuthPhoneActivity)
-                    finish()
-                }
-            }, 1000)
+            val enteredOtp: String = binding.etSmsCode.text.toString()
+            if (binding.etSmsCode.text.isEmpty()) {
+                binding.etSmsCode.error = "Enter valid code"
+            } else {
+                val credential: PhoneAuthCredential =
+                    PhoneAuthProvider.getCredential(verificationCode, enteredOtp)
+                signIn(credential)
+                setInProgress(true)
+            }
+        }
+
+        binding.btnResendToken.setOnClickListener {
+            sendOtp(countryCodePicker.fullNumberWithPlus, true)
         }
     }
 
     private fun sendOtp(phoneNumber: String, isResend: Boolean) {
+        startResendTimer()
         setInProgress(true)
         val builder: PhoneAuthOptions.Builder = PhoneAuthOptions.newBuilder(mAuth)
             .setPhoneNumber(phoneNumber)
             .setTimeout(timeoutSeconds, TimeUnit.SECONDS)
             .setActivity(this@AuthPhoneActivity)
             .setCallbacks(object : OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted( phoneAuthCredential: PhoneAuthCredential) {
+                override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
                     signIn(phoneAuthCredential)
                     setInProgress(false)
-                    binding.btnSend.visibility = View.GONE
-                    binding.btnResendToken.visibility = View.VISIBLE
                 }
 
-                override fun onVerificationFailed( e: FirebaseException) {
-                    Toast.makeText(applicationContext, "OTP verification failed", Toast.LENGTH_SHORT).show()
-                    Log.e("POPO", "onVerificationFailed: ${e.message}, phoneNumber is $phoneNumber", )
+                override fun onVerificationFailed(e: FirebaseException) {
+                    Toast.makeText(
+                        applicationContext,
+                        "OTP verification failed",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.e("POPO", "onVerificationFailed: ${e.message}, phoneNumber is $phoneNumber")
                     setInProgress(false)
-                    binding.btnSend.visibility = View.GONE
-                    binding.btnResendToken.visibility = View.VISIBLE
                 }
 
                 override fun onCodeSent(
@@ -107,12 +109,15 @@ class AuthPhoneActivity : AppCompatActivity() {
                     super.onCodeSent(s, forceResendingToken)
                     verificationCode = s
                     resendingToken = forceResendingToken
-                    Toast.makeText(applicationContext, "OTP sent successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "OTP sent successfully", Toast.LENGTH_SHORT)
+                        .show()
                     setInProgress(false)
                 }
             })
         if (isResend) {
-            PhoneAuthProvider.verifyPhoneNumber(builder.setForceResendingToken(resendingToken).build())
+            PhoneAuthProvider.verifyPhoneNumber(
+                builder.setForceResendingToken(resendingToken).build()
+            )
         } else {
             PhoneAuthProvider.verifyPhoneNumber(builder.build())
         }
@@ -120,16 +125,47 @@ class AuthPhoneActivity : AppCompatActivity() {
 
     private fun signIn(phoneAuthCredential: PhoneAuthCredential) {
         //login and go to next activity
+        setInProgress(true)
+        mAuth.signInWithCredential(phoneAuthCredential).addOnCompleteListener { task ->
+            setInProgress(false)
+            if (task.isSuccessful) {
+                val intent = Intent(this@AuthPhoneActivity, RegisterUserActivity::class.java)
+                intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
+                startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "OTP verification failed", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun setInProgress(inProgress: Boolean) {
         if (inProgress) {
             binding.authProgressBar.visibility = View.VISIBLE
             binding.btnSend.isEnabled = false
+            binding.btnEnter.isEnabled = false
+            binding.btnResendToken.isEnabled = false
         } else {
             binding.authProgressBar.visibility = View.GONE
             binding.btnSend.isEnabled = true
+            binding.btnEnter.isEnabled = true
         }
+    }
+
+    private fun startResendTimer() {
+        binding.btnResendToken.isEnabled = false
+        val timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                timeoutSeconds--
+                binding.btnResendToken.text = "Resend OTP in $timeoutSeconds seconds"
+                if (timeoutSeconds <= 0) {
+                    timeoutSeconds = 15L
+                    timer.cancel()
+                    runOnUiThread { binding.btnResendToken.isEnabled = true }
+                }
+            }
+        }, 0, 1000)
     }
 
     private fun observeViewModel() {

@@ -28,7 +28,7 @@ class RegisterUserActivity : AppCompatActivity() {
 
         observeViewModel()
 
-        val phoneNumber = intent.extras?.getString("phoneNumber")
+        val phoneNumber = intent.extras?.getString("phone")
         val formattedNumber = phoneNumber?.let { formatPhoneNumber(it) }
         binding.tvPhone.text = formattedNumber
 
