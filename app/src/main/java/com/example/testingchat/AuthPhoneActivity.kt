@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -16,7 +15,6 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import com.google.firebase.firestore.FirebaseFirestore
 import com.hbb20.CountryCodePicker
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Timer
@@ -134,39 +132,13 @@ class AuthPhoneActivity : AppCompatActivity() {
             setInProgress(false)
             if (task.isSuccessful) {
                 val phoneNumber = countryCodePicker.fullNumberWithPlus
-                checkUserExistenceInFirestore(phoneNumber)
+                observeUser()
+                viewModel.checkUserExistenceInFirestore(phoneNumber)
             } else {
                 Toast.makeText(applicationContext, "OTP verification failed", Toast.LENGTH_SHORT)
                     .show()
             }
         }
-    }
-
-    private fun checkUserExistenceInFirestore(phoneNumber: String) {
-        val db = FirebaseFirestore.getInstance()
-        val usersCollection = db.collection("users")
-
-        usersCollection
-            .whereEqualTo("phone", phoneNumber)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val querySnapshot = task.result
-                    if (querySnapshot != null && !querySnapshot.isEmpty) {
-                        // User exists, navigate to the main activity
-                        val intent = Intent(this@AuthPhoneActivity, MainActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        // User does not exist, navigate to the registration activity
-                        val intent = Intent(this@AuthPhoneActivity, RegisterUserActivity::class.java)
-                        intent.putExtra("phone", phoneNumber)
-                        startActivity(intent)
-                    }
-                } else {
-                    // Error occurred while querying Firestore
-                    Toast.makeText(applicationContext, "Error fetching user data", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 
     private fun setInProgress(inProgress: Boolean) {
@@ -196,5 +168,18 @@ class AuthPhoneActivity : AppCompatActivity() {
                 }
             }
         }, 0, 1000)
+    }
+
+    private fun observeUser() {
+        viewModel.userExistsLiveData.observe(this@AuthPhoneActivity) {
+            if (it) {
+                val intent = Intent(this@AuthPhoneActivity, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this@AuthPhoneActivity, RegisterUserActivity::class.java)
+                intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
+                startActivity(intent)
+            }
+        }
     }
 }
