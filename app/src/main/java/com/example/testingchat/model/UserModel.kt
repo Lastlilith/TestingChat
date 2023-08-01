@@ -1,14 +1,15 @@
 package com.example.testingchat.model
 
-import com.google.gson.annotations.SerializedName
+import com.google.firebase.Timestamp
 
 data class UserModel(
-    @SerializedName("phone") val phone: String = "",
-    @SerializedName("name") val name: String? = null,
-    @SerializedName("username") val username: String = "",
-    @SerializedName("birthday") val birthday: String? = null,
-    @SerializedName("city") val city: String? = null,
-    @SerializedName("user_id") val id: Int = 0,
+    val phone: String = "",
+    val name: String? = null,
+    val username: String = "",
+    val birthday: String? = null,
+    val city: String? = null,
+    val id: Int = 0,
+    val createdTimeStamp: Timestamp? = null,
 //    @SerializedName("avatar") val image: String = ""
 ) {
     constructor() : this("", null, "", null, null, 0)
