@@ -4,9 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.Timer
 import java.util.TimerTask
@@ -27,56 +32,57 @@ class AuthViewModel : ViewModel() {
         get() = _countdownTimerLiveData
 
     fun checkUserExistenceInFirestore(phoneNumber: String) {
-        try {
-            val db = FirebaseFirestore.getInstance()
-            val usersCollection = db.collection("users")
+        viewModelScope.launch {
+            try {
+                val db = FirebaseFirestore.getInstance()
+                val usersCollection = db.collection("users")
 
-            usersCollection
-                .whereEqualTo("phone", phoneNumber)
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val querySnapshot = task.result
-                        val userExists = querySnapshot != null && !querySnapshot.isEmpty
-                        _userExistsLiveData.value = userExists
-                    } else {
-                        // Error occurred while querying Firestore
-                        _userExistsLiveData.value = false
-                    }
+                val querySnapshot = withContext(Dispatchers.IO) {
+                    usersCollection.whereEqualTo("phone", phoneNumber).get().await()
                 }
-        } catch (e: Exception) {
-            Log.e("POPO", "checkUserExistenceInFirestore: ${e.message}", )
+                val userExists = !querySnapshot.isEmpty
+                _userExistsLiveData.value = userExists
+            } catch (e: Exception) {
+                Log.e("POPO", "checkUserExistenceInFirestore: ${e.message}")
+                _userExistsLiveData.value = false
+            }
         }
     }
 
+
     fun signIn(phoneAuthCredential: PhoneAuthCredential) {
-        try {
-            val mAuth = FirebaseAuth.getInstance()
-            mAuth.signInWithCredential(phoneAuthCredential)
-                .addOnCompleteListener { task ->
-                    _signInLiveData.value = task.isSuccessful
+        viewModelScope.launch {
+            try {
+                val mAuth = FirebaseAuth.getInstance()
+                val result = withContext(Dispatchers.IO) {
+                    mAuth.signInWithCredential(phoneAuthCredential).await()
                 }
-        } catch (e: Exception) {
-            Log.e("POPO", "signIn: ${e.message}")
+                _signInLiveData.value = result?.user != null
+            } catch (e: Exception) {
+                Log.e("POPO", "signIn: ${e.message}")
+                _signInLiveData.value = false
+            }
         }
     }
 
     fun startResendTimer() {
-        try {
-            _countdownTimerLiveData.value = 15L // Initial value
-            val timer = Timer()
-            timer.scheduleAtFixedRate(object : TimerTask() {
-                override fun run() {
-                    val currentValue = _countdownTimerLiveData.value ?: 0L
-                    val newValue = currentValue - 1
-                    _countdownTimerLiveData.postValue(newValue)
-                    if (newValue <= 0) {
-                        timer.cancel()
+        viewModelScope.launch {
+            try {
+                _countdownTimerLiveData.value = 15L // Initial value
+                val timer = Timer()
+                timer.scheduleAtFixedRate(object : TimerTask() {
+                    override fun run() {
+                        val currentValue = _countdownTimerLiveData.value ?: 0L
+                        val newValue = currentValue - 1
+                        _countdownTimerLiveData.postValue(newValue)
+                        if (newValue <= 0) {
+                            timer.cancel()
+                        }
                     }
-                }
-            }, 0, 1000)
-        } catch (e: Exception) {
-            Log.e("POPO", "startResendTimer: ${e.message}", )
+                }, 0, 1000)
+            } catch (e: Exception) {
+                Log.e("POPO", "startResendTimer: ${e.message}")
+            }
         }
     }
 }
