@@ -30,7 +30,6 @@ class AuthPhoneActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthPhoneBinding
     private val viewModel: AuthViewModel by viewModels()
 
-    private var isUserExisting = false
     private val mAuth = FirebaseAuth.getInstance()
     private var timeoutSeconds = 15L
 
@@ -43,8 +42,6 @@ class AuthPhoneActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthPhoneBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        observeViewModel()
 
         countryCodePicker = binding.authCountryCode
         val phoneNumber = binding.etAuthMobileNumber
@@ -199,38 +196,5 @@ class AuthPhoneActivity : AppCompatActivity() {
                 }
             }
         }, 0, 1000)
-    }
-
-    private fun observeViewModel() {
-        viewModel.apply {
-            phoneText.observe(this@AuthPhoneActivity) {
-                binding.etAuthMobileNumber.text.toString()
-            }
-            progress.observe(this@AuthPhoneActivity) {
-                if (it) {
-                    binding.authProgressBar.visibility = View.VISIBLE
-                    binding.btnSend.isEnabled = false
-                } else {
-                    binding.authProgressBar.visibility = View.GONE
-                    binding.btnSend.isEnabled = true
-                }
-            }
-            error.observe(this@AuthPhoneActivity) {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
-            }
-            successCode.observe(this@AuthPhoneActivity) {
-                binding.btnEnter.isEnabled = it
-            }
-            smsText.observe(this@AuthPhoneActivity) {
-                binding.etSmsCode.text.toString()
-            }
-            isUserExist.observe(this@AuthPhoneActivity) {
-                isUserExisting = it
-            }
-            viewModel.isUserExist.observe(this@AuthPhoneActivity) {
-                isUserExisting = it
-            }
-        }
-
     }
 }
