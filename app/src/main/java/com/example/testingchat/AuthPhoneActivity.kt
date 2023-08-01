@@ -45,6 +45,11 @@ class AuthPhoneActivity : AppCompatActivity() {
         val phoneNumber = binding.etAuthMobileNumber
 
         countryCodePicker.registerCarrierNumberEditText(phoneNumber)
+
+
+        observeUser()
+
+
         binding.btnSend.setOnClickListener {
             if (!countryCodePicker.isValidFullNumber) {
                 phoneNumber.error = "Wrong phone number"
@@ -65,7 +70,7 @@ class AuthPhoneActivity : AppCompatActivity() {
             } else {
                 val credential: PhoneAuthCredential =
                     PhoneAuthProvider.getCredential(verificationCode, enteredOtp)
-                signIn(credential)
+                viewModel.signIn(credential)
                 setInProgress(true)
             }
         }
@@ -90,7 +95,7 @@ class AuthPhoneActivity : AppCompatActivity() {
             .setActivity(this@AuthPhoneActivity)
             .setCallbacks(object : OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
-                    signIn(phoneAuthCredential)
+                    viewModel.signIn(phoneAuthCredential)
                     setInProgress(false)
                 }
 
@@ -122,22 +127,6 @@ class AuthPhoneActivity : AppCompatActivity() {
             )
         } else {
             PhoneAuthProvider.verifyPhoneNumber(builder.build())
-        }
-    }
-
-    private fun signIn(phoneAuthCredential: PhoneAuthCredential) {
-        //login and go to next activity
-        setInProgress(true)
-        mAuth.signInWithCredential(phoneAuthCredential).addOnCompleteListener { task ->
-            setInProgress(false)
-            if (task.isSuccessful) {
-                val phoneNumber = countryCodePicker.fullNumberWithPlus
-                observeUser()
-                viewModel.checkUserExistenceInFirestore(phoneNumber)
-            } else {
-                Toast.makeText(applicationContext, "OTP verification failed", Toast.LENGTH_SHORT)
-                    .show()
-            }
         }
     }
 
@@ -179,6 +168,21 @@ class AuthPhoneActivity : AppCompatActivity() {
                 val intent = Intent(this@AuthPhoneActivity, RegisterUserActivity::class.java)
                 intent.putExtra("phone", countryCodePicker.fullNumberWithPlus)
                 startActivity(intent)
+            }
+        }
+        viewModel.signInLiveData.observe(this) { signInSuccessful ->
+            if (signInSuccessful) {
+                // Sign-in successful, check user existence in Firestore
+                val phoneNumber = countryCodePicker.fullNumberWithPlus
+                viewModel.checkUserExistenceInFirestore(phoneNumber)
+            } else {
+                // Sign-in failed, show a message to the user
+                Toast.makeText(
+                    applicationContext,
+                    "OTP verification failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+                setInProgress(false)
             }
         }
     }
