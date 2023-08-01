@@ -77,9 +77,9 @@ class AuthPhoneActivity : AppCompatActivity() {
             } else {
                 sendOtp(countryCodePicker.fullNumberWithPlus, true)
             }
-
         }
     }
+
 
     private fun sendOtp(phoneNumber: String, isResend: Boolean) {
         viewModel.startResendTimer()

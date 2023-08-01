@@ -47,7 +47,6 @@ class AuthViewModel : ViewModel() {
         } catch (e: Exception) {
             Log.e("POPO", "checkUserExistenceInFirestore: ${e.message}", )
         }
-
     }
 
     fun signIn(phoneAuthCredential: PhoneAuthCredential) {
@@ -60,7 +59,6 @@ class AuthViewModel : ViewModel() {
         } catch (e: Exception) {
             Log.e("POPO", "signIn: ${e.message}")
         }
-
     }
 
     fun startResendTimer() {
@@ -80,6 +78,5 @@ class AuthViewModel : ViewModel() {
         } catch (e: Exception) {
             Log.e("POPO", "startResendTimer: ${e.message}", )
         }
-
     }
 }

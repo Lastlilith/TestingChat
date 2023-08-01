@@ -72,7 +72,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:background="@drawable/edit_text_rounder_corner"
             android:elevation="5dp"
-            android:hint="Введите сообщение"
+            android:hint="Enter your message"
             android:paddingStart="20dp"
             android:padding="10dp" />
 
