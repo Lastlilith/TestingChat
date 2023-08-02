@@ -23,6 +23,10 @@ class ChatActivity : AppCompatActivity() {
         observeViewModel()
         viewModel.loadUserData(userId)
         binding.btnBack.setOnClickListener { finish() }
+
+        binding.btnSendMessage.setOnClickListener {
+            binding.etMessage.text = null
+        }
     }
 
     private fun observeViewModel() {
