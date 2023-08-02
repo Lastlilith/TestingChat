@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatActivity : AppCompatActivity() {
     private lateinit var userId: String
     private lateinit var binding: ActivityChatBinding
-
+    private val viewModel: ChatRoomViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +20,16 @@ class ChatActivity : AppCompatActivity() {
 
         userId = intent.getStringExtra("userId") ?: ""
 
+        observeViewModel()
+        viewModel.loadUserData(userId)
         binding.btnBack.setOnClickListener { finish() }
     }
 
-
+    private fun observeViewModel() {
+        viewModel.userData.observe(this) { user ->
+            if (user != null) {
+                binding.toolbarTUsername.text = user.username
+            }
+        }
+    }
 }
