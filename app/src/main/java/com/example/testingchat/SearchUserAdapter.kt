@@ -14,7 +14,7 @@ class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<Sea
 
     private var userList: List<UserModel> = emptyList()
 
-    fun setContactList(users: List<UserModel>, currentUserId: Int) {
+    fun setContactList(users: List<UserModel>, currentUserId: String) {
         userList = users.filter { it.id != currentUserId }
         notifyDataSetChanged()
     }

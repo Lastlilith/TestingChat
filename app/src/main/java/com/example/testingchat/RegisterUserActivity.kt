@@ -3,15 +3,12 @@ package com.example.testingchat
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.testingchat.databinding.ActivityRegisterUserBinding
 import com.example.testingchat.model.UserModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -73,7 +70,7 @@ class RegisterUserActivity : AppCompatActivity() {
             return
         } else {
             setInProgress(true)
-            userModel = UserModel(phoneNumber, name, username, createdTimeStamp = Timestamp.now())
+            userModel = UserModel(phoneNumber, name, username, createdTimeStamp = Timestamp.now(), id = currentUserId())
             currentUserDetails().set(userModel).addOnCompleteListener { task ->
                 setInProgress(false)
                 if (task.isSuccessful) {

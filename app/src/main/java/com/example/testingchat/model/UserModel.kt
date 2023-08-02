@@ -8,9 +8,9 @@ data class UserModel(
     val username: String = "",
     val birthday: String? = null,
     val city: String? = null,
-    val id: Int = 0,
+    val id: String? = null,
     val createdTimeStamp: Timestamp? = null,
 //    @SerializedName("avatar") val image: String = ""
 ) {
-    constructor() : this("", null, "", null, null, 0)
+    constructor() : this("", null, "", null, null, null)
 }
