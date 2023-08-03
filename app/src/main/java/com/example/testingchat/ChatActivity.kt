@@ -23,7 +23,6 @@ class ChatActivity : AppCompatActivity() {
         userId = intent.getStringExtra("userId") ?: ""
         observeViewModel()
 
-//        chatroomId = getChatroomId(currentUserId(), userId)
 
         viewModel.loadUserData(userId)
         viewModel.createOrLoadChatroom(viewModel.currentUserId(), userId)
@@ -31,7 +30,12 @@ class ChatActivity : AppCompatActivity() {
         Log.e("POPO", "onCreate: $userId")
 
         binding.btnSendMessage.setOnClickListener {
-            binding.etMessage.text = null
+            if (binding.etMessage.text.toString().trim().isNotEmpty()) {
+                viewModel.sendMessageToUser(binding.etMessage.text.toString().trim())
+                binding.etMessage.text.clear()
+            } else {
+                binding.etMessage.error = "Please enter message"
+            }
         }
     }
 
@@ -42,9 +46,11 @@ class ChatActivity : AppCompatActivity() {
             }
         }
         viewModel.chatroomId.observe(this) { chatroomId ->
-            // Use the chatroomId, e.g., for setting up the chat UI
             this.chatroomId = chatroomId
             Log.e("ChatActivity", "Received chatroomId: $chatroomId")
+        }
+        viewModel.message.observe(this) {
+            binding.etMessage.text.toString()
         }
     }
 }
