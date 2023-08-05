@@ -168,7 +168,7 @@ class AuthPhoneActivity : AppCompatActivity() {
         viewModel.countdownTimerLiveData.observe(this) { timerValue ->
             if (timerValue > 0) {
                 binding.btnResendToken.isEnabled = false
-                binding.btnResendToken.text = "Resend OTP in $timerValue seconds"
+                binding.btnResendToken.text = "Retry in $timerValue"
             } else {
                 binding.btnResendToken.isEnabled = true
                 binding.btnResendToken.text = "Resend OTP"

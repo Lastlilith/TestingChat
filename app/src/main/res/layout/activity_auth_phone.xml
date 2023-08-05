@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:background="@color/primary"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".AuthPhoneActivity">
@@ -13,137 +13,189 @@
         android:id="@+id/iv_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_auth"
         android:src="@drawable/phone_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/primary" />
+        app:tint="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_enter_phone"
+    <androidx.cardview.widget.CardView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="28dp"
+        android:layout_marginBottom="-20dp"
+        android:id="@+id/layout_auth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:letterSpacing="0.08"
-        android:text="Enter your phone number"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <LinearLayout
-        android:id="@+id/number_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/tv_enter_phone">
 
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/auth_country_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:ccp_autoDetectCountry="true"
-            app:ccp_countryPreference="RU"
-            app:ccp_showNameCode="false" />
-
-        <EditText
-            android:id="@+id/et_auth_mobile_number"
+        <TextView
+            android:id="@+id/tv_enter_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="Enter your phone number"
+            android:textSize="20sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/number_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/tv_enter_phone">
+
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/auth_country_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:ccp_autoDetectCountry="true"
+                app:ccp_countryPreference="RU"
+                app:ccp_showNameCode="false" />
+
+            <EditText
+                android:id="@+id/et_auth_mobile_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/edit_text_rounder_corner"
+                android:elevation="5dp"
+                android:hint="Phone number"
+                android:inputType="phone"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="@+id/et_sms_code"
+            app:layout_constraintBottom_toBottomOf="@+id/et_sms_code"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_rounded_corner"
+            android:text="Get code"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/et_sms_code"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/edit_text_rounder_corner"
             android:elevation="5dp"
-            android:hint="Phone number"
-            android:inputType="phone"
-            android:padding="10dp" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_send"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/btn_rounded_corner"
-        android:text="Get code"
-        android:visibility="visible"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/number_layout"
-        app:layout_constraintStart_toStartOf="@+id/number_layout"
-        app:layout_constraintTop_toBottomOf="@+id/number_layout" />
-
-    <EditText
-        android:id="@+id/et_sms_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/edit_text_rounder_corner"
-        android:elevation="5dp"
-        app:layout_constraintTop_toBottomOf="@+id/btn_send"
-        android:hint="SMS-code"
-        android:maxLength="6"
-        android:inputType="number"
-        android:padding="10dp" />
+            android:hint="SMS-code"
+            android:inputType="number"
+            android:maxLength="6"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/number_layout"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-    <Button
-        android:id="@+id/btn_resend_token"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/btn_rounded_corner"
-        android:text="Resend code"
-        android:visibility="gone"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/number_layout"
-        app:layout_constraintStart_toStartOf="@+id/number_layout"
-        app:layout_constraintTop_toBottomOf="@+id/et_sms_code" />
+        <Button
+            android:id="@+id/btn_resend_token"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_rounded_corner"
+            android:text="Resend code"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@+id/et_sms_code"
+            app:layout_constraintBottom_toBottomOf="@+id/et_sms_code"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/auth_progressBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:indeterminateTint="@color/primary"
-        android:layout_width="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_enter"
-        app:layout_constraintTop_toBottomOf="@+id/btn_resend_token"
-        android:visibility="gone"
-        android:layout_height="wrap_content"/>
+        <ProgressBar
+            android:id="@+id/auth_progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminateTint="@color/primary"
+            android:visibility="gone"
+            android:elevation="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_test"
-        app:layout_constraintTop_toBottomOf="@+id/et_sms_code"
-        app:layout_constraintBottom_toTopOf="@+id/btn_enter"
-        android:layout_width="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_enter"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_rounded_corner"
+            android:enabled="false"
+            android:text="Enter"
+            app:layout_constraintBottom_toTopOf="@+id/tv_or_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_sms_code"/>
 
-    <Button
-        android:id="@+id/btn_enter"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/btn_rounded_corner"
-        android:text="Enter"
-        android:enabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/tv_or_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Or Log in with"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_enter" />
+
+        <LinearLayout
+            android:id="@+id/layout_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_or_login">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="25dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_google" />
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_apple" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
