@@ -138,6 +138,11 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
                         _message.value = message
                     }
                 }
+
+            val sentMessage = ChatMessageModel(message, currentUserId())
+            val currentList = _chatMessages.value?.toMutableList() ?: mutableListOf()
+            currentList.add(sentMessage)
+            _chatMessages.value = currentList
         }
     }
 

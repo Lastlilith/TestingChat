@@ -40,15 +40,13 @@ class ChatActivity : AppCompatActivity() {
         Log.e("POPO", "onCreate: $userId")
 
         binding.btnSendMessage.setOnClickListener {
-            if (binding.etMessage.text.toString().trim().isNotEmpty()) {
-                viewModel.sendMessageToUser(binding.etMessage.text.toString().trim())
-                val sentMessage = ChatMessageModel(binding.etMessage.text.toString(), viewModel.currentUserId())
-                adapter.messageList.add(sentMessage)
-                adapter.notifyDataSetChanged()
+            val messageText = binding.etMessage.text.toString().trim()
+            if (messageText.isNotEmpty()) {
+                viewModel.sendMessageToUser(messageText)
                 binding.etMessage.text.clear()
-                chatRecyclerView.scrollToPosition(adapter.itemCount - 1)
             } else {
-                binding.etMessage.error = "Please enter message"
+                binding.etMessage.error = "Please enter a message"
+                return@setOnClickListener
             }
         }
     }
