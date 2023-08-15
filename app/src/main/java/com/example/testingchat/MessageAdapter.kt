@@ -61,13 +61,13 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
         val receiveMessage: TextView = itemView.findViewById(R.id.tv_received_message)
     }
 
-    fun adjustTextViewWidth(textView: TextView, text: String) {
+    private fun adjustTextViewWidth(textView: TextView, text: String) {
         // Get the screen width
         val displayMetrics = context.resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
 
         // Calculate the desired maximum width (75% of the screen width)
-        val maxWidth = (screenWidth * 0.75).toInt()
+        val maxWidth = (screenWidth * 0.70).toInt()
 
         // Measure the width of the text
         textView.text = text

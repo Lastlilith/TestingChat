@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.example.testingchat.databinding.ActivityChatBinding
 import com.example.testingchat.model.ChatMessageModel
 import com.google.firebase.auth.FirebaseAuth
@@ -30,12 +31,16 @@ class ChatActivity : AppCompatActivity() {
         observeViewModel()
 
         chatRecyclerView = binding.rvChatMessages
-        chatRecyclerView.layoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
+        chatRecyclerView.layoutManager = linearLayoutManager
+        linearLayoutManager.stackFromEnd = true
         adapter = MessageAdapter(this, ArrayList())
         chatRecyclerView.adapter = adapter
 
         viewModel.loadUserData(userId)
+
         viewModel.createOrLoadChatroom(viewModel.currentUserId(), userId)
+
         binding.btnBack.setOnClickListener { finish() }
         Log.e("POPO", "onCreate: $userId")
 
@@ -44,6 +49,7 @@ class ChatActivity : AppCompatActivity() {
             if (messageText.isNotEmpty()) {
                 viewModel.sendMessageToUser(messageText)
                 binding.etMessage.text.clear()
+                chatRecyclerView.smoothScrollToPosition(adapter.itemCount - 1)
             } else {
                 binding.etMessage.error = "Please enter a message"
                 return@setOnClickListener
