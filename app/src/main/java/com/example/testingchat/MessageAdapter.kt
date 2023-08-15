@@ -1,6 +1,7 @@
 package com.example.testingchat
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messageList[position]
 
-        return if (FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.senderId)) {
+        return if (FirebaseAuth.getInstance().currentUser?.uid == currentMessage.senderId) {
             ITEM_SENT
         } else {
             ITEM_RECEIVED

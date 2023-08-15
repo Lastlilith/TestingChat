@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -42,6 +43,9 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
     val chatroomModel: LiveData<ChatroomModel>
         get() = _chatroomModel
 
+    private val _chatMessages = MutableLiveData<List<ChatMessageModel>>()
+    val chatMessages: LiveData<List<ChatMessageModel>>
+        get() = _chatMessages
 
     fun loadUserData(userId: String) {
         viewModelScope.launch {
@@ -59,6 +63,20 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
                 // Handle error
                 Log.e("POPO", "loadUserData: ${e.message}", )
                 Toast.makeText(application.applicationContext, "Try again later", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun loadChatMessages(chatroomId: String) {
+        viewModelScope.launch {
+            try {
+                val chatMessageRef = getChatroomMessageReference(chatroomId)
+                val querySnapshot = chatMessageRef.orderBy("timeStamp").get().await()
+                val messages = querySnapshot.toObjects(ChatMessageModel::class.java)
+                _chatMessages.postValue(messages)
+            } catch (e: Exception) {
+                // Handle error
+                Log.e("POPO", "loadChatMessages: ${e.message}", )
             }
         }
     }
