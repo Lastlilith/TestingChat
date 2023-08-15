@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.databinding.ActivityChatBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,6 +15,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private val viewModel: ChatRoomViewModel by viewModels()
     private lateinit var chatroomId: String
+    private lateinit var chatRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,8 @@ class ChatActivity : AppCompatActivity() {
 
         userId = intent.getStringExtra("userId") ?: ""
         observeViewModel()
+
+        chatRecyclerView = binding.rvChatMessages
 
 
         viewModel.loadUserData(userId)
