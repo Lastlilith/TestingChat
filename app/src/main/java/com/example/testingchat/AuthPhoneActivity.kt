@@ -75,7 +75,7 @@ class AuthPhoneActivity : AppCompatActivity() {
                 phoneNumber.error = "Wrong phone number"
                 return@setOnClickListener
             } else {
-                sendOtp(countryCodePicker.fullNumberWithPlus, true)
+                sendOtp(countryCodePicker.fullNumberWithPlus, false)
             }
         }
     }

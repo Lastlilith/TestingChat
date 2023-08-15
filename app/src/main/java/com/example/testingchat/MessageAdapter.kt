@@ -32,9 +32,11 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
         if (holder.javaClass == SentViewHolder::class.java) {
             val viewHolder = holder as SentViewHolder
             viewHolder.sentMessage.text = currentMessage.message
+            adjustTextViewWidth(viewHolder.sentMessage, currentMessage.message)
         } else {
             val viewHolder = holder as ReceiveViewHolder
             viewHolder.receiveMessage.text = currentMessage.message
+            adjustTextViewWidth(viewHolder.receiveMessage, currentMessage.message)
         }
     }
 
@@ -57,5 +59,24 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
 
     inner class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val receiveMessage: TextView = itemView.findViewById(R.id.tv_received_message)
+    }
+
+    fun adjustTextViewWidth(textView: TextView, text: String) {
+        // Get the screen width
+        val displayMetrics = context.resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+
+        // Calculate the desired maximum width (75% of the screen width)
+        val maxWidth = (screenWidth * 0.75).toInt()
+
+        // Measure the width of the text
+        textView.text = text
+        textView.measure(0, 0)
+        val textWidth = textView.measuredWidth
+
+        // Set the width of the TextView based on content length and maxWidth
+        val layoutParams = textView.layoutParams
+        layoutParams.width = if (textWidth > maxWidth) maxWidth else textWidth
+        textView.layoutParams = layoutParams
     }
 }

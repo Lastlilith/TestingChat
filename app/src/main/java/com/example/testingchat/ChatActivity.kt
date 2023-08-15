@@ -51,6 +51,7 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+
     private fun observeViewModel() {
         viewModel.userData.observe(this) { user ->
             if (user != null) {
