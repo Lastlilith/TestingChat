@@ -30,12 +30,9 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val currentMessage = messageList[position]
         if (holder.javaClass == SentViewHolder::class.java) {
-            // do stuff for sent view holder
-
             val viewHolder = holder as SentViewHolder
             viewHolder.sentMessage.text = currentMessage.message
         } else {
-            // do stuff for receive view holder
             val viewHolder = holder as ReceiveViewHolder
             viewHolder.receiveMessage.text = currentMessage.message
         }
@@ -43,7 +40,6 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<ChatMessag
 
     override fun getItemViewType(position: Int): Int {
         val currentMessage = messageList[position]
-
         return if (FirebaseAuth.getInstance().currentUser?.uid == currentMessage.senderId) {
             ITEM_SENT
         } else {

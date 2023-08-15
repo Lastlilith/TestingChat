@@ -42,7 +42,11 @@ class ChatActivity : AppCompatActivity() {
         binding.btnSendMessage.setOnClickListener {
             if (binding.etMessage.text.toString().trim().isNotEmpty()) {
                 viewModel.sendMessageToUser(binding.etMessage.text.toString().trim())
+                val sentMessage = ChatMessageModel(binding.etMessage.text.toString(), viewModel.currentUserId())
+                adapter.messageList.add(sentMessage)
+                adapter.notifyDataSetChanged()
                 binding.etMessage.text.clear()
+                chatRecyclerView.scrollToPosition(adapter.itemCount - 1)
             } else {
                 binding.etMessage.error = "Please enter message"
             }
