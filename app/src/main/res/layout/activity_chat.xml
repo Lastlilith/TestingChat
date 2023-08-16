@@ -46,21 +46,33 @@
         android:id="@+id/rv_chat_messages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
         app:layout_constraintTop_toBottomOf="@+id/chat_toolbar" />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="8dp"
         android:paddingTop="8dp"
         android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
@@ -70,23 +82,23 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:layout_weight="1"
-            android:imeOptions="actionDone"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textCapSentences"
             android:background="@drawable/edit_text_rounder_corner"
             android:elevation="5dp"
             android:hint="Enter your message"
-            android:paddingStart="20dp"
-            android:layout_marginBottom="5dp"
-            android:padding="10dp" />
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine|textCapSentences"
+            android:padding="10dp"
+            android:paddingStart="20dp" />
 
         <ImageButton
             android:id="@+id/btn_send_message"
             android:layout_width="40dp"
             android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_gravity="end|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/icon_send"
             app:tint="@color/primary" />
 

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.app.fragments.recent_chats.ChatFragment
 import com.example.testingchat.R
-import com.example.testingchat.adapters.SearchUserAdapter
+import com.example.testingchat.app.adapters.SearchUserAdapter
 import com.example.testingchat.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 

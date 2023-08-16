@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.R
+import com.example.testingchat.app.adapters.RecentChatRecyclerAdapter
 import com.example.testingchat.app.fragments.new_chats.SearchFragment
 import com.example.testingchat.databinding.FragmentChatBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ChatFragment : Fragment() {
@@ -18,6 +22,9 @@ class ChatFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentChatBinding == null")
 
     private lateinit var searchContactsFragment: SearchFragment
+    private val viewModel: RecentChatsViewModel by viewModels()
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: RecentChatRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +36,8 @@ class ChatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView = binding.rvRecentChats
 
         searchContactsFragment = SearchFragment()
 

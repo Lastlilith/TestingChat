@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testingchat.adapters.MessageAdapter
+import com.example.testingchat.app.adapters.MessageAdapter
 import com.example.testingchat.databinding.ActivityChatBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,6 +69,9 @@ class ChatActivity : AppCompatActivity() {
         }
         viewModel.message.observe(this) {
             binding.etMessage.text.toString()
+        }
+        viewModel.chatroomModel.observe(this) {
+
         }
         viewModel.chatMessages.observe(this) { messages ->
             adapter.messageList.clear()

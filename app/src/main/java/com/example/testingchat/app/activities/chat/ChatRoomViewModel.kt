@@ -38,8 +38,8 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
     val message: LiveData<String>
         get() = _message
 
-    private val _chatroomModel = MutableLiveData<ChatroomModel>()
-    val chatroomModel: LiveData<ChatroomModel>
+    private val _chatroomModel = MutableLiveData<ChatroomModel?>()
+    val chatroomModel: MutableLiveData<ChatroomModel?>
         get() = _chatroomModel
 
     private val _chatMessages = MutableLiveData<List<ChatMessageModel>>()
@@ -89,6 +89,8 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
                 val document = chatroomRef.get().await()
                 if (document.exists()) {
                     // Chatroom exists, load it
+                    val chatroom = document.toObject<ChatroomModel>()
+                    _chatroomModel.value = chatroom // Set the value of chatroomModel LiveData
                     _chatroomId.value = chatroomId
                 } else {
                     // Chatroom doesn't exist, create it
@@ -100,6 +102,7 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
                         ""
                     )
                     chatroomRef.set(chatroomModel).await()
+                    _chatroomModel.value = chatroomModel // Set the value of chatroomModel LiveData
                     _chatroomId.value = chatroomId
                 }
             } catch (e: Exception) {
@@ -115,18 +118,18 @@ class ChatRoomViewModel @Inject constructor() : BaseViewModel() {
 
     fun sendMessageToUser(message: String) {
         val chatMessageModel = ChatMessageModel(message, currentUserId(), Timestamp.now())
-        // Check if chatroomId is not null before proceeding
         val actualChatroomId = _chatroomId.value
         if (actualChatroomId != null) {
-            val chatroomModel = _chatroomModel.value // Get the chatroomModel from LiveData
+            val chatroomModel = _chatroomModel.value
+
             chatroomModel?.lastMessageTimestamp = Timestamp.now()
             chatroomModel?.lastMessageSenderId = currentUserId()
             chatroomModel?.lastMessage = message
 
-            // Update the chatroomModel in Firestore
+
             val chatroomRef = getChatroomReference(actualChatroomId)
             if (chatroomModel != null) {
-                chatroomRef.set(chatroomModel)
+                    chatroomRef.set(chatroomModel)
             }
 
             // Add the chat message to the "chats" collection inside the chatroom

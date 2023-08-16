@@ -1,4 +1,4 @@
-package com.example.testingchat.adapters
+package com.example.testingchat.app.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
