@@ -1,10 +1,12 @@
-package com.example.testingchat
+package com.example.testingchat.app.fragments.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.testingchat.app.fragments.edit_profile.EditProfileFragment
+import com.example.testingchat.R
 import com.example.testingchat.databinding.FragmentProfileBinding
 
 

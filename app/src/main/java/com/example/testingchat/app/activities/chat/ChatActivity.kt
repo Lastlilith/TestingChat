@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.chat
 
 import android.os.Bundle
 import android.util.Log
@@ -6,10 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import com.example.testingchat.adapters.MessageAdapter
 import com.example.testingchat.databinding.ActivityChatBinding
-import com.example.testingchat.model.ChatMessageModel
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 

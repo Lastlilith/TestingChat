@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.fragments.edit_profile
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
@@ -13,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.testingchat.R
+import com.example.testingchat.app.fragments.profile.ProfileFragment
 import com.example.testingchat.databinding.FragmentEditProfileBinding
 import com.github.dhaval2404.imagepicker.ImagePicker
 

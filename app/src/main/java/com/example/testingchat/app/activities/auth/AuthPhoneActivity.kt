@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testingchat.app.activities.MainActivity
+import com.example.testingchat.app.activities.register.RegisterUserActivity
 import com.example.testingchat.databinding.ActivityAuthPhoneBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth

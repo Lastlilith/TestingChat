@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.register
 
 import com.example.testingchat.base.BaseViewModel
 import com.google.firebase.firestore.FirebaseFirestore

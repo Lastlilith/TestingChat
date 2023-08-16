@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testingchat.app.activities.MainActivity
 import com.example.testingchat.databinding.ActivityRegisterUserBinding
 import com.example.testingchat.model.UserModel
 import com.google.firebase.Timestamp

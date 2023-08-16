@@ -8,7 +8,7 @@
     android:background="@color/primary"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".AuthPhoneActivity">
+    tools:context=".app.activities.auth.AuthPhoneActivity">
 
     <ImageView
         android:id="@+id/iv_logo"

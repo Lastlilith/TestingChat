@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.adapters
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.testingchat.app.activities.chat.ChatActivity
+import com.example.testingchat.R
 import com.example.testingchat.model.UserModel
 
 class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<SearchUserAdapter.SearchUserViewHolder>() {

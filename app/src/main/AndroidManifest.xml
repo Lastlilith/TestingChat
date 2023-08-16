@@ -16,7 +16,7 @@
 
 
     <application
-        android:name=".App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,19 +27,19 @@
         android:theme="@style/Theme.TestingChat"
         tools:targetApi="31">
         <activity
-            android:name=".ChatActivity"
+            android:name=".app.activities.chat.ChatActivity"
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
-            android:name=".RegisterUserActivity"
+            android:name=".app.activities.register.RegisterUserActivity"
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
-            android:name=".AuthPhoneActivity"
+            android:name=".app.activities.auth.AuthPhoneActivity"
             android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".app.activities.splash.SplashActivity"
             android:screenOrientation="nosensor"
             android:exported="true">
             <intent-filter>
@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".app.activities.MainActivity"
             android:exported="false" />
     </application>
 

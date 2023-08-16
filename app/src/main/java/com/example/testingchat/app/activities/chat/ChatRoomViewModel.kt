@@ -1,4 +1,4 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.chat
 
 import android.util.Log
 import android.widget.Toast
@@ -16,7 +16,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

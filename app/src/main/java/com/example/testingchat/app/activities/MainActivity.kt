@@ -1,7 +1,10 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.testingchat.app.fragments.recent_chats.ChatFragment
+import com.example.testingchat.app.fragments.profile.ProfileFragment
+import com.example.testingchat.R
 import com.example.testingchat.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

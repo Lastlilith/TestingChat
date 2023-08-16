@@ -1,10 +1,12 @@
-package com.example.testingchat
+package com.example.testingchat.app.activities.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
+import com.example.testingchat.R
+import com.example.testingchat.app.activities.auth.AuthPhoneActivity
 import java.util.Timer
 import java.util.TimerTask
 

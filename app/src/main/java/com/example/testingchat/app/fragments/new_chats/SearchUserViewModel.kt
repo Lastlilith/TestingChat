@@ -1,10 +1,9 @@
-package com.example.testingchat
+package com.example.testingchat.app.fragments.new_chats
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.testingchat.base.BaseViewModel
-import com.example.testingchat.data.const.Constant.Companion.USER_ID
 import com.example.testingchat.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
