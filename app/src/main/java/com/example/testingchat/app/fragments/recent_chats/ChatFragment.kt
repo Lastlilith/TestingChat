@@ -27,7 +27,6 @@ class ChatFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentChatBinding == null")
 
     private lateinit var searchContactsFragment: SearchFragment
-    private val viewModel: RecentChatsViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecentChatRecyclerAdapter
 
