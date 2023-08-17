@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.testingchat.app.activities.splash.SplashActivity
 import com.example.testingchat.databinding.FragmentProfileBinding
 import com.example.testingchat.model.UserModel
+import com.example.testingchat.utils.AndroidUtil
 import com.example.testingchat.utils.FirebaseUtil
 import com.example.testingchat.utils.FirebaseUtil.currentUserDetails
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -32,6 +33,7 @@ class ProfileFragment : Fragment() {
     private lateinit var selectedImageUri: Uri
     private lateinit var profilePicture: ImageView
     private lateinit var currentUserModel: UserModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,12 +48,10 @@ class ProfileFragment : Fragment() {
         getUserData()
 
         profilePicture = binding.ivProfilePic
-        imagePickLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
+        imagePickLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 selectedImageUri = result!!.data!!.data!!
-                setProfileImage(selectedImageUri, profilePicture)
+                AndroidUtil.setProfileImage(requireContext(), selectedImageUri, profilePicture)
             }
         }
 
@@ -69,17 +69,29 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.btnUpdateProfile.setOnClickListener {
+            setInProgress(true)
+            if (selectedImageUri != null) {
+                FirebaseUtil.getCurrentProfilePicStorageRef().putFile(selectedImageUri)
+                    .addOnCompleteListener {
+                        updateToFirestore()
+                    }
+            } else {
+                updateToFirestore()
+            }
+        }
+
     }
 
     private fun getUserData() {
         setInProgress(true)
-//        FirebaseUtil.getCurrentProfilePicStorageRef().getDownloadUrl()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful()) {
-//                    val uri: Uri = task.getResult()
-//                    AndroidUtil.setProfilePic(context, uri, profilePic)
-//                }
-//            }
+        FirebaseUtil.getCurrentProfilePicStorageRef().downloadUrl
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uri: Uri = task.result
+                    AndroidUtil.setProfileImage(requireContext(), uri, binding.ivProfilePic)
+                }
+            }
         currentUserDetails().get().addOnCompleteListener { task: Task<DocumentSnapshot> ->
             setInProgress(false)
             currentUserModel = task.result.toObject(UserModel::class.java)!!
@@ -99,8 +111,18 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun setProfileImage(uri: Uri, image: ImageView) {
-        Glide.with(this).load(uri).apply(RequestOptions.circleCropTransform()).into(image)
+
+
+    private fun updateToFirestore() {
+        currentUserDetails().set(currentUserModel)
+            .addOnCompleteListener { task: Task<Void?> ->
+                setInProgress(false)
+                if (task.isSuccessful) {
+                    AndroidUtil.showToast(context, "Updated successfully")
+                } else {
+                    AndroidUtil.showToast(context, "Updated failed")
+                }
+            }
     }
 
 }

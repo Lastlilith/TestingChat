@@ -43,15 +43,15 @@ class RecentChatRecyclerAdapter(
                 if (task.isSuccessful) {
                     val lastMessageSentByMe = model.lastMessageSenderId == currentUserId()
                     val otherUserModel = task.result.toObject(UserModel::class.java)
-//                    FirebaseUtil.getOtherProfilePicStorageRef(otherUserModel.getUserId())
-//                        .getDownloadUrl()
-//                        .addOnCompleteListener { t ->
-//                            if (t.isSuccessful()) {
-//                                val uri: Uri = t.getResult()
-//                                AndroidUtil.setProfilePic(context, uri, holder.profilePic)
-//                            }
-//                        }
-                    holder.usernameText.text = otherUserModel!!.username
+                    FirebaseUtil.getOtherProfilePicStorageRef(otherUserModel!!.id)
+                        .downloadUrl
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                val uri: Uri = it.result
+                                AndroidUtil.setProfileImage(context, uri, holder.profilePic)
+                            }
+                        }
+                    holder.usernameText.text = otherUserModel.username
                     if (lastMessageSentByMe) {
                         holder.lastMessageText.text = "Me : " + model.lastMessage
                     } else {

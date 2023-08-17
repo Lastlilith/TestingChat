@@ -1,5 +1,6 @@
 package com.example.testingchat.app.activities.chat
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.app.adapters.MessageAdapter
 import com.example.testingchat.databinding.ActivityChatBinding
+import com.example.testingchat.utils.AndroidUtil
+import com.example.testingchat.utils.FirebaseUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -38,6 +41,15 @@ class ChatActivity : AppCompatActivity() {
         viewModel.loadUserData(userId)
 
         viewModel.createOrLoadChatroom(viewModel.currentUserId(), userId)
+
+        FirebaseUtil.getOtherProfilePicStorageRef(userId)
+            .downloadUrl
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val uri: Uri = it.result
+                    AndroidUtil.setProfileImage(this, uri, binding.ivProfilePic)
+                }
+            }
 
         binding.btnBack.setOnClickListener { finish() }
         Log.e("POPO", "onCreate: $userId")

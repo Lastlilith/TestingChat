@@ -2,6 +2,7 @@ package com.example.testingchat.app.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.app.activities.chat.ChatActivity
 import com.example.testingchat.R
 import com.example.testingchat.model.UserModel
+import com.example.testingchat.utils.AndroidUtil
+import com.example.testingchat.utils.FirebaseUtil
 
 class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<SearchUserAdapter.SearchUserViewHolder>() {
 
@@ -24,11 +27,12 @@ class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<Sea
     inner class SearchUserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val usernameTextView: TextView = itemView.findViewById(R.id.tv_username)
         private val phoneNumberTextView: TextView = itemView.findViewById(R.id.tv_phoneNumber)
-        private val imageView: ImageView = itemView.findViewById(R.id.iv_profile_pic)
+        var imageView: ImageView = itemView.findViewById(R.id.iv_profile_pic)
 
         fun bind(user: UserModel) {
             usernameTextView.text = user.username
-            phoneNumberTextView.text = user.phone        }
+            phoneNumberTextView.text = user.phone
+        }
 
     }
 
@@ -42,6 +46,15 @@ class SearchUserAdapter(private val context: Context) : RecyclerView.Adapter<Sea
     override fun onBindViewHolder(holder: SearchUserViewHolder, position: Int) {
         val user = userList[position]
         holder.bind(user)
+
+        FirebaseUtil.getOtherProfilePicStorageRef(user.id)
+            .downloadUrl
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val uri: Uri = it.result
+                    AndroidUtil.setProfileImage(context, uri, holder.imageView)
+                }
+            }
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ChatActivity::class.java)
