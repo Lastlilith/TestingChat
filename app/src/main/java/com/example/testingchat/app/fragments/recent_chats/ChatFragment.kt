@@ -6,11 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testingchat.R
 import com.example.testingchat.app.adapters.RecentChatRecyclerAdapter
 import com.example.testingchat.app.fragments.new_chats.SearchFragment
 import com.example.testingchat.databinding.FragmentChatBinding
+import com.example.testingchat.model.ChatroomModel
+import com.example.testingchat.utils.FirebaseUtil
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -38,6 +43,7 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = binding.rvRecentChats
+        setupRecyclerView()
 
         searchContactsFragment = SearchFragment()
 
@@ -46,4 +52,15 @@ class ChatFragment : Fragment() {
         }
     }
 
+    private fun setupRecyclerView() {
+        val query: Query = FirebaseUtil.allChatroomCollectionReference()
+            .whereArrayContains("userIds", FirebaseUtil.currentUserId()!!)
+            .orderBy("lastMessageTimestamp", Query.Direction.DESCENDING)
+        val options = FirestoreRecyclerOptions.Builder<ChatroomModel>()
+            .setQuery(query, ChatroomModel::class.java).build()
+        adapter = RecentChatRecyclerAdapter(options, requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
+        adapter.startListening()
+    }
 }
