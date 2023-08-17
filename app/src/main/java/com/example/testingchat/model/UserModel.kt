@@ -10,7 +10,8 @@ data class UserModel(
     var city: String? = null,
     val id: String? = null,
     val createdTimeStamp: Timestamp? = null,
-    var image: String = ""
+    var image: String = "",
+    val fcmToken: String = "",
 ) {
-    constructor() : this("", null, "", null, null, null)
+    constructor() : this("", null, "", null, null, null, null, "", "")
 }

@@ -1,11 +1,14 @@
 package com.example.testingchat.app.activities
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testingchat.app.fragments.recent_chats.ChatFragment
 import com.example.testingchat.app.fragments.profile.ProfileFragment
 import com.example.testingchat.R
 import com.example.testingchat.databinding.ActivityMainBinding
+import com.example.testingchat.utils.FirebaseUtil
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,5 +39,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.bottomNav.selectedItemId = R.id.menu_chat
+        getFcmToken()
+    }
+
+    private fun getFcmToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                FirebaseUtil.currentUserDetails().update("fcmToken", token)
+            }
+        }
     }
 }
