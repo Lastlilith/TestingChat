@@ -22,6 +22,7 @@ import com.example.testingchat.utils.FirebaseUtil.currentUserDetails
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class ProfileFragment : Fragment() {
@@ -63,10 +64,14 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnLogout.setOnClickListener {
-            FirebaseUtil.logout()
-            val intent = Intent(requireContext(), SplashActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    FirebaseUtil.logout()
+                    val intent = Intent(requireContext(), SplashActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+            }
         }
 
         binding.btnUpdateProfile.setOnClickListener {
