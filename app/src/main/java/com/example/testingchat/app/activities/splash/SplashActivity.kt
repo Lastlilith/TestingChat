@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.blogspot.atifsoftwares.animatoolib.Animatoo
 import com.example.testingchat.R
 import com.example.testingchat.app.activities.MainActivity
@@ -19,37 +20,53 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        // need to add inside if statement check for isLogged in check && rest
-        if (intent.extras !=null) {
-            //from notification
+
+        Log.e("POPO", "is user logged in: ${FirebaseUtil.isLoggedIn()} ", )
+
+        if (intent.extras != null) {
             val userId = intent.extras!!.getString("userId")
             FirebaseUtil.allUserCollectionReference().document(userId!!).get()
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val user = it.result.toObject(UserModel::class.java)!!
-                        val mainIntent = Intent(this, MainActivity::class.java)
-                        mainIntent.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-                        startActivity(mainIntent)
-                        val intent = Intent(this, ChatActivity::class.java)
-                        intent.putExtra("userId", user.id.toString())
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        this.startActivity(intent)
-                        finish()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val user = task.result.toObject(UserModel::class.java)!!
+                        startMainActivity(user)
                     }
                 }
-        } else {
+        } else if(FirebaseUtil.isLoggedIn()) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        else {
             Timer().schedule(object : TimerTask() {
                 override fun run() {
-                    val intent = Intent(this@SplashActivity, AuthPhoneActivity::class.java)
-                    startActivity(intent)
-                    Animatoo.animateFade(this@SplashActivity)
-                    finish()
+                    startAuthPhoneActivity()
                 }
             }, DELAY)
         }
+    }
+
+    private fun startMainActivity(user: UserModel) {
+        val mainIntent = Intent(this, MainActivity::class.java)
+        mainIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+
+        val chatIntent = Intent(this, ChatActivity::class.java)
+        chatIntent.putExtra("userId", user.id.toString())
+
+        startActivity(mainIntent)
+        startActivity(chatIntent)
+        Animatoo.animateFade(this)
+        finish()
+    }
+
+    private fun startAuthPhoneActivity() {
+        val intent = Intent(this, AuthPhoneActivity::class.java)
+        startActivity(intent)
+        Animatoo.animateFade(this)
+        finish()
     }
 
     companion object {
         private const val DELAY: Long = 1000
     }
 }
+

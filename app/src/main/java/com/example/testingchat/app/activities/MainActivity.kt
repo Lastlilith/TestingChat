@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val token = task.result
+                Log.e("POPO", "token: $token", )
                 FirebaseUtil.currentUserDetails().update("fcmToken", token)
             }
         }

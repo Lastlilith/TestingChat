@@ -15,6 +15,13 @@ object FirebaseUtil {
         return FirebaseAuth.getInstance().uid
     }
 
+    fun isLoggedIn(): Boolean {
+        if (currentUserId() != null) {
+            return true
+        }
+        return false
+    }
+
     fun currentUserDetails(): DocumentReference {
         return FirebaseFirestore.getInstance().collection("users").document((currentUserId())!!)
     }
